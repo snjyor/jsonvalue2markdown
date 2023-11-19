@@ -44,17 +44,18 @@ mapping_dict = {
 markdown = JsonValueToMarkdown(
         json_value=json_value,
         mapping_dict=mapping_dict,
-        title_level=3,
+        title_level=3
     ).convert()
 print(markdown)
 ```
 
 ## 参数说明
-| 参数           | 说明                            |
-|:-------------|:------------------------------|
-| json_value   | 需要转换为markdown格式的json数据        |
-| mapping_dict | json数据中的key与markdown中的标签的映射关系 |
-| title_level  | 标题的级别，从1开始，最大为6               |
+| 参数           | 说明                            |是否必须|
+|:-------------|:------------------------------|:----|
+| json_value   | 需要转换为markdown格式的json数据        |是    |
+| mapping_dict | json数据中的key与markdown中的标签的映射关系 |否    |
+| title_level  | 标题的级别，从1开始，最大为6               |否    |
+| drop_keys    | 不想转成 markdown 内容的键                |否    |
 
 ## 输出结果
 ```markdown
