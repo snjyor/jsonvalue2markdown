@@ -14,7 +14,7 @@ class JsonValueToMarkdown:
     2. 通过mapping_dict来指定json的key和markdown的标题的映射关系
     """
 
-    def __init__(self, json_value, mapping_dict=None, title_level=2):
+    def __init__(self, json_value, mapping_dict: dict =None, title_level: int = 2, drop_keys: list = None):
         self.json_value = json_value
         self.mapping_dict = mapping_dict
         self.markdown = ""
@@ -25,6 +25,7 @@ class JsonValueToMarkdown:
         self.table_tag = "|"  # 表格分隔符
         self.link_tag = "[]"  # 链接标签
         self.imgtag = "!"  # 图片标签
+        self.drop_keys = drop_keys if drop_keys is not None else []  # 不需要转换的key
         self.tag_funcs = {
             "p": self._p2markdown,
             "li": self._li2markdown,
@@ -74,6 +75,8 @@ class JsonValueToMarkdown:
             elif isinstance(value, list):
                 self._convert_list(value)
             elif isinstance(value, (str, float, int)):
+                if key in self.drop_keys:
+                    continue
                 tag = self.mapping_dict.get(key, "")
                 if tag:
                     if tag.startswith("h"):
@@ -122,6 +125,8 @@ class JsonValueToMarkdown:
         """
         tags = list(json_dict.keys())
         for tag in tags:
+            if tag in self.drop_keys:
+                continue
             value = json_dict.get(tag)
             if isinstance(value, (str, float, int)):
                 if level <= self.title_level:
